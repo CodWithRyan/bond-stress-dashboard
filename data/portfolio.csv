@@ -1,0 +1,4 @@
+id,face,coupon,freq,maturity
+BOND_ZC,100,0.00,1,2028-12-30
+BOND_A,100,0.03,1,2030-12-30
+BOND_B,100,0.05,1,2035-12-30

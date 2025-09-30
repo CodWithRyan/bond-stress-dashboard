@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.python-version
+bond_stress_env/
+.venv/
+env/
+venv/
+.ipynb_checkpoints/
+outputs/
+.vscode/
