@@ -7,8 +7,8 @@ Cashflow = Tuple[float, float]
 def dv01(r_of_t: Callable[[float], float], cashflows: Sequence[Cashflow], bp_step: float = 1.0) -> float:
     """
     DV01 = variation de prix pour un choc de 1 bp
-    Numériquement: pente dP/dy via différence centrée, puis x 1bp.
-    Formellement (continu): DV01 = P * D_mod * 1e-4 (positif pour un long).
+    On bump la courbe de ±bp_step (en bps), DV01 ≈ |P_up - P_down| / (2 * bp_step)
+    (Unités: devise par bp)
     """
     # dy = bp_step / 1e4
     # P = price_from_curve(r_of_t, cashflows)
@@ -19,13 +19,14 @@ def dv01(r_of_t: Callable[[float], float], cashflows: Sequence[Cashflow], bp_ste
 
 def duration_modified(r_of_t: Callable[[float], float], cashflows: Sequence[Cashflow], bp_step: float = 1.0) -> float:
     """
-    D_mod (continu) = DV01 / P.
-    Interprétation: élasticité (en valeur absolue) du prix au taux continu.
+    D_mod (continu) = (1/P) * dP/dy
+    Comme DV01 = P * D_mod * 1e-4, alors D_mod = DV01 / (P * 1e-4)
     """
     P = price_from_curve(r_of_t, cashflows)
     if P == 0.0:
         return 0.0
-    return dv01(r_of_t, cashflows, bp_step=bp_step) / P
+    dv = dv01(r_of_t, cashflows, bp_step=bp_step)
+    return dv / (P * 1e-4)
 
 def convexity(r_of_t: Callable[[float], float], cashflows: Sequence[Cashflow], bp_step: float = 1.0) -> float:
     """
