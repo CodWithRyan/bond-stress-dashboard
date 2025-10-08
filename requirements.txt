@@ -1,3 +1,4 @@
-pandas
-numpy
-matplotlib
+numpy>=1.26
+pandas>=2.2
+matplotlib>=3.8
+ipykernel>=6.29
